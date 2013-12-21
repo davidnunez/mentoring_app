@@ -48,6 +48,8 @@ public class Director : MonoBehaviour {
 "com.zoodles.book.thethreelittlepigs",
 "com.zoodles.book.thetortoiseandthehare",
 "com.zoodles.book.thevelveteenrabbit",
+"com.intellijoy.sightwords",
+"com.goatella.beginningblends"
 		
 	};
 	
