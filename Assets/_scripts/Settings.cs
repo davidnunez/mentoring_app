@@ -55,16 +55,23 @@ public class Settings : MonoBehaviour {
 		if (GUI.Button(new Rect(10, 290, 150, 100), "Trebuchet")) {
 		
 				
-				
 			AndroidSystem.SendBroadcast("edu.mit.media.prg.funffilemover.TrebuchetLauncher", new Hashtable());
-
-				
 			showGui = false;
 	
 		}	
 					
 			
-			
+		if (GUI.Button(new Rect(200, 10, 150, 100), "FunfFileMover")) {
+		
+//			AndroidSystem.SendBroadcast("edu.mit.media.prg.funffilemover.MoveFiles", new Hashtable());
+//			showGui = false;
+				AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+				AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+				AndroidJavaObject pm = jo.Call<AndroidJavaObject>("getPackageManager");
+				AndroidJavaObject intent = pm.Call<AndroidJavaObject>("getLaunchIntentForPackage", "edu.mit.media.prg.funffilemover");
+				jo.Call("startActivity", intent);	
+
+		}		
 /*		if (GUI.Button(new Rect(10, 300, 150, 100), "test video")) {
 				
 				
