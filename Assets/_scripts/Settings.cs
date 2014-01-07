@@ -52,11 +52,23 @@ public class Settings : MonoBehaviour {
 
 			
 		}
+		if (GUI.Button(new Rect(10, 290, 150, 100), "Trebuchet")) {
+		
+				
+				
+			AndroidSystem.SendBroadcast("edu.mit.media.prg.funffilemover.TrebuchetLauncher", new Hashtable());
+
+				
+			showGui = false;
+	
+		}	
+					
 			
-		if (GUI.Button(new Rect(10, 300, 150, 100), "test video")) {
+			
+/*		if (GUI.Button(new Rect(10, 300, 150, 100), "test video")) {
 				
 				
-/*			AndroidJavaClass intentClass = new AndroidJavaClass(AndroidSystem.INTENT);
+			AndroidJavaClass intentClass = new AndroidJavaClass(AndroidSystem.INTENT);
 			AndroidJavaObject intentObject = new AndroidJavaObject(AndroidSystem.INTENT);			
 			intentObject.Call<AndroidJavaClass>("setAction", intentClass.GetStatic<string>("ACTION_VIEW"));
 			intentObject.Call("setDataAndType", "file://mnt/sdcard/Movies/ANTARCTIC_ANTICS4.mp4", "video/mp4");
@@ -65,10 +77,10 @@ public class Settings : MonoBehaviour {
 			AndroidJavaObject pm = jo.Call<AndroidJavaObject>("getPackageManager");
 			jo.Call("startActivity", intentObject);	
 			showGui = false; */
-			showGui = false;
-			Handheld.PlayFullScreenMovie ("file:///sdcard/Movies/ANTARCTIC_ANTICS4.mp4", Color.black, FullScreenMovieControlMode.CancelOnInput);
-			
-		}
+//			showGui = false;
+//			Handheld.PlayFullScreenMovie ("file:///sdcard/Movies/TINGA_TINGA_2-5.mp4", Color.black, FullScreenMovieControlMode.Full);
+//			EtceteraAndroid.playMovie("/sdcard/Movies/ANTARCTIC_ANTICS4.mp4", 0x000000FF, true, EtceteraAndroid.ScalingMode.AspectFit, false);
+//		}
 			
  
 		//GUI.Label(new Rect(10, 300, 150, 100), 	 Application.persistentDataPath + "/" + "test.txt");
@@ -86,4 +98,6 @@ public class Settings : MonoBehaviour {
 #endif        
 		}
 	}
+	
+
 }

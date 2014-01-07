@@ -4,7 +4,8 @@ using System.Collections;
 using FourthSky.Android;
 
 public class App : MonoBehaviour {
-	
+	public enum ApplicationType {app, video};
+	public ApplicationType application_type;
 	public string application_label = "";
 	public string package_name = "";
 	public string package_versionCode = "";
@@ -119,36 +120,42 @@ public class App : MonoBehaviour {
 	}	
 	
 	
-	void OnGUI() {
-		
-#if UNITY_ANDROID
 
-		if (GUI.Button(new Rect(10, 10, 150, 100), "Launch")) {
-			AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-			AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
-			AndroidJavaObject pm = jo.Call<AndroidJavaObject>("getPackageManager");
-			AndroidJavaObject intent = pm.Call<AndroidJavaObject>("getLaunchIntentForPackage", "com.android.settings");
-			jo.Call("startActivity", intent);	
-			
-		}
-		   
-#endif        
-		
-	}
 	
 	void OnTap(TapGesture gesture) { 
 		Debug.Log ("Trying to launch:" );
 		try {
-			AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-			AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
-			AndroidJavaObject pm = jo.Call<AndroidJavaObject>("getPackageManager");
-			AndroidJavaObject intent = pm.Call<AndroidJavaObject>("getLaunchIntentForPackage", "edu.mit.media.prg.alligator");
-			jo.Call("startActivity", intent);	
+			if (application_type == ApplicationType.app) {
+				AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+				AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+				AndroidJavaObject pm = jo.Call<AndroidJavaObject>("getPackageManager");
+				AndroidJavaObject intent = pm.Call<AndroidJavaObject>("getLaunchIntentForPackage", package_name);
+				jo.Call("startActivity", intent);	
+			}
+			if (application_type == ApplicationType.video) {
+				
+				Handheld.PlayFullScreenMovie ("file:///sdcard/Movies/" + package_name, Color.black, FullScreenMovieControlMode.Full);	
+			}
+			
+			sendLog ("LauncherApp", package_name);
 		} catch {
-			Debug.Log ("BLAH!!!!!");
+			Debug.Log ("Had Trouble Starting: " + package_name);
 		}
 		
 	}
 	
+	
+	void sendLog(string _name, string _value) {
+		var unixTime = System.DateTime.Now.ToUniversalTime() - new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+		
+		Hashtable extras = new Hashtable();
+		extras.Add("DATABASE_NAME", "mainPipeline");
+		extras.Add("TIMESTAMP", (long)unixTime.TotalMilliseconds);
+		extras.Add("NAME", _name);
+		extras.Add("VALUE", _value);
+			
+		AndroidSystem.SendBroadcast("edu.mit.media.funf.RECORD", extras);
+	}
+		
 	
 }
