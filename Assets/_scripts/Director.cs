@@ -6,7 +6,7 @@ using FourthSky.Android;
 public class Director : MonoBehaviour {
 
 	string[,] appIds = new string[,] {
-{"WHERE_THE_WILD_THINGS_ARE6.mp4","Alligators all around","video"},
+/*{"WHERE_THE_WILD_THINGS_ARE6.mp4","Alligators all around","video"},
 {"MAKE_WAY_FOR_DUCKLINGS5.mp4","Cat & Canary","video"},
 {"WHOLE_WORLD3.mp4","Come on Rain","video"},
 {"WHOLE_WORLD2.mp4","He's got the whole world in his hands (Song)","video"},
@@ -107,7 +107,7 @@ public class Director : MonoBehaviour {
 {"CLICK_CLACK_MOO6.mp4","Waiting for Wings","video"},
 {"PETES_A_PIZZA7.mp4","What's Under My Bed?","video"},
 {"MAKE_WAY_FOR_DUCKLINGS6.mp4","Wings: A Tale of Two Chickens","video"},
-{"GOOD_NIGHT_GORILLA5.m4v.mp4","Zin! Zin! Zin! A Violin!","video"},
+{"GOOD_NIGHT_GORILLA5.m4v.mp4","Zin! Zin! Zin! A Violin!","video"},*/
 {"BMA_CO.Phonics_Lv1_Unit10","","app"},
 {"BMA_CO.Phonics_Lv1_Unit2","","app"},
 {"BMA_CO.Phonics_Lv1_Unit3","","app"},
