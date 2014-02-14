@@ -291,7 +291,7 @@ public class Director : MonoBehaviour {
 		
 		// Position Camera Dolly
 		cameraDolly.transform.position = new Vector3((numCols-1.0f)*200.0f/2.0f, -(numRows-1.0f)*200.0f/2.0f, -700.0f);
-		
+		cameraDolly.transform.localScale = new Vector3((numCols-1-4)*200, (numRows-1-2)*200, 1);	
 		string fileName = Application.persistentDataPath + "/" + "test.txt";
 		StreamWriter fileWriter = File.CreateText(fileName);
 		fileWriter.WriteLine("Hello world");
