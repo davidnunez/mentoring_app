@@ -230,6 +230,10 @@ public class Director : MonoBehaviour {
 	
 	
 	void Awake() {
+		int numApps = appIds.GetUpperBound(0) + 1;
+		float numCols = 15.0f;
+		float numRows = Mathf.Ceil(numApps/numCols);
+
 		GameObject apps = GameObject.Find ("Apps");
 		int i = 0;
 		int j = 0;
@@ -286,11 +290,7 @@ public class Director : MonoBehaviour {
 		}
 		
 		// Position Camera Dolly
-		int numApps = appIds.GetUpperBound(0) + 1;
-		
-		float numRows = Mathf.Ceil(numApps/15.0f);
-		Debug.Log(numRows);
-		cameraDolly.transform.position = new Vector3((15.0f-1.0f)*200.0f/2.0f, -(numRows-1.0f)*200.0f/2.0f, -700.0f);
+		cameraDolly.transform.position = new Vector3((numCols-1.0f)*200.0f/2.0f, -(numRows-1.0f)*200.0f/2.0f, -700.0f);
 		
 		string fileName = Application.persistentDataPath + "/" + "test.txt";
 		StreamWriter fileWriter = File.CreateText(fileName);
