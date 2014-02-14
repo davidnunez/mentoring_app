@@ -9,3 +9,8 @@ Library/*
 Temp
 *.pidb
 Build
+
+FingerGestures
+FingerGestures.*
+
+/bin/
