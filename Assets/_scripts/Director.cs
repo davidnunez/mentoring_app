@@ -226,13 +226,13 @@ public class Director : MonoBehaviour {
 	
 	
 	
-	
+	public GameObject cameraDolly;
 	
 	
 	void Awake() {
 		GameObject apps = GameObject.Find ("Apps");
 		int i = 0;
-		int j = 1;
+		int j = 0;
 		for (int k=0; k < appIds.GetLength(0); k++) {
 			
 			GameObject instance = (GameObject)Instantiate(Resources.Load("prefabs/app"));
@@ -284,11 +284,19 @@ public class Director : MonoBehaviour {
 				i = 0;
 			}
 		}
+		
+		// Position Camera Dolly
+		int numApps = appIds.GetUpperBound(0) + 1;
+		
+		float numRows = Mathf.Ceil(numApps/15.0f);
+		Debug.Log(numRows);
+		cameraDolly.transform.position = new Vector3((15.0f-1.0f)*200.0f/2.0f, -(numRows-1.0f)*200.0f/2.0f, -700.0f);
+		
 		string fileName = Application.persistentDataPath + "/" + "test.txt";
 		StreamWriter fileWriter = File.CreateText(fileName);
 		fileWriter.WriteLine("Hello world");
 		fileWriter.Close();
-		
+		 
 	}
 	
 	
