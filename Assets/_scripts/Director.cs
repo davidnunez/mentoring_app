@@ -13,8 +13,19 @@ public class Director : MonoBehaviour {
 	void Awake() {
 		
 		string fileName = Application.persistentDataPath + "/" + "apps.json";
-		string appsJSON = File.ReadAllText(fileName);
-
+		string appsJSON = "";
+		try {
+			appsJSON = File.ReadAllText(fileName);
+		} catch (System.Exception e) {
+			appsJSON = @"{
+	""apps"": [
+		{""file"":""edu.mit.media.prg.tinkerbook_unity"",""title"":"""",""type"":""app""},	
+	]
+}";
+		} 
+			
+			
+			
 		var N = JSON.Parse(appsJSON);
 		JSONArray appArray = N["apps"].AsArray;
 		
@@ -40,7 +51,6 @@ public class Director : MonoBehaviour {
 			app.package_name = node["file"];	
 
 			if (node["type"].Value == "app") {
-				Debug.Log("test this?");
 				app.application_type = App.ApplicationType.app;
 				app.application_icon = "apps/icons/" + node["file"];
 				Texture2D texture = Resources.Load(app.application_icon) as Texture2D;
