@@ -283,7 +283,7 @@ public class Director : MonoBehaviour {
 			
 			instance.transform.parent = apps.transform;
 			i = i+1;
-			if (i >= 15) {
+			if (i >= numCols) {
 				j = j+1;
 				i = 0;
 			}
