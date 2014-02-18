@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.IO;
 using FourthSky.Android;
-
+using SimpleJSON;
 public class Director : MonoBehaviour {
 
 	string[,] appIds = new string[,] {
@@ -230,6 +230,18 @@ public class Director : MonoBehaviour {
 	
 	
 	void Awake() {
+		
+		string fileName = Application.persistentDataPath + "/" + "apps.json";
+		string appsJSON = File.ReadAllText(fileName);
+
+		var N = JSON.Parse(appsJSON);
+		JSONArray appArray = N["apps"].AsArray;
+		
+		Debug.Log("Count: " + appArray.Count);
+		foreach (JSONNode node in appArray) {
+			Debug.Log("tick" + node["title"]);
+		}
+		
 		int numApps = appIds.GetUpperBound(0) + 1;
 		float numCols = 15.0f;
 		float numRows = Mathf.Ceil(numApps/numCols);
@@ -238,16 +250,14 @@ public class Director : MonoBehaviour {
 		int i = 0;
 		int j = 0;
 		for (int k=0; k < appIds.GetLength(0); k++) {
-			
+			// Load app Instance
 			GameObject instance = (GameObject)Instantiate(Resources.Load("prefabs/app"));
 			App app = instance.GetComponent<App>();
+			instance.transform.parent = apps.transform;
+
 			
 			app.package_name = appIds[k, 0];	
-			
-/*			app.application_icon = "apps/icons/" + appIds[k, 0];
-			Texture2D texture = Resources.Load(app.application_icon) as Texture2D;
-			app.renderer.material.mainTexture = texture;
-					 */
+
 			if (appIds[k, 2] == "app") {
 				app.application_type = App.ApplicationType.app;
 				app.application_icon = "apps/icons/" + appIds[k, 0];
@@ -262,26 +272,12 @@ public class Director : MonoBehaviour {
 				app.renderer.material.mainTexture = texture;
 
 			}
-			//app.transform.localPosition = new Vector3(Random.Range(-1900,1900), Random.Range (-400,400), 0);
-			
-			
-			//app.transform.localPosition = new Vector3(-1500 + i*200, 400 - j * 200, 0);
 			app.transform.localPosition = new Vector3(0 + i*200, 0 - j * 200, 0);
 			
-			//float relevanceFactor = Remap(Mathf.Abs(instance.transform.position.x), 1900, 0, 24, 128);
 			float relevanceFactor = -100.0f;
 			app.transform.localScale = new Vector3(relevanceFactor,-relevanceFactor,relevanceFactor);
-			
-			
 			app.rigidbody.isKinematic = true;
-			
-			//instance.AddComponent<SpringJoint>();
-			//SpringJoint springJoint = instance.GetComponent<SpringJoint>();
-			//springJoint.spring = 1000;
-			//springJoint.damper = 100;
-			//springJoint.maxDistance = 0;
-			
-			instance.transform.parent = apps.transform;
+						
 			i = i+1;
 			if (i >= numCols) {
 				j = j+1;
@@ -289,13 +285,11 @@ public class Director : MonoBehaviour {
 			}
 		}
 		
-		// Position Camera Dolly
+		// Position & Size Camera Dolly
 		cameraDolly.transform.position = new Vector3((numCols-1.0f)*200.0f/2.0f, -(numRows-1.0f)*200.0f/2.0f, -700.0f);
 		cameraDolly.transform.localScale = new Vector3((numCols-1-4)*200, (numRows-1-2)*200, 1);	
-		string fileName = Application.persistentDataPath + "/" + "test.txt";
-		StreamWriter fileWriter = File.CreateText(fileName);
-		fileWriter.WriteLine("Hello world");
-		fileWriter.Close();
+		
+
 		 
 	}
 	
