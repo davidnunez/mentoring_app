@@ -11,7 +11,8 @@ public class Director : MonoBehaviour {
 	
 	
 	void Awake() {
-		
+		Screen.orientation = ScreenOrientation.LandscapeLeft;
+
 		string fileName = Application.persistentDataPath + "/" + "apps.json";
 		string appsJSON = "";
 		try {
