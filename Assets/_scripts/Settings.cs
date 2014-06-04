@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 public class Settings : MonoBehaviour {
 	bool showGui = false;
+	bool acceptSwipe = false;
 	// Use this for initialization
 	void Start () {
 	
@@ -12,7 +13,15 @@ public class Settings : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (showGui) {
+			gameObject.renderer.enabled = false;
+			acceptSwipe = false;
+		}
+	}
 	
+	void OnLongPress(LongPressGesture gesture) { /* your code here */ 
+		gameObject.renderer.enabled = !gameObject.renderer.enabled;
+		acceptSwipe = gameObject.renderer.enabled;
 	}
 	void OnTripleTap(TapGesture gesture) { /* your code here */ 
 	
@@ -20,6 +29,12 @@ public class Settings : MonoBehaviour {
 		UnityEngine.Debug.Log("found triple tap" + gesture.Taps);
 		showGui = !showGui;
 		
+	}
+	
+	void OnTwoFingerSwipe(SwipeGesture gesture) { 
+		if (acceptSwipe) {
+			showGui = true;
+		}
 	}
 	
 	void OnGUI() {
@@ -52,13 +67,13 @@ public class Settings : MonoBehaviour {
 
 			
 		}
-		/*if (GUI.Button(new Rect(10, 290, 150, 100), "Trebuchet")) {
+		if (GUI.Button(new Rect(10, 290, 150, 100), "Default Launcher")) {
 		
 				
 			AndroidSystem.SendBroadcast("edu.mit.media.prg.funffilemover.TrebuchetLauncher", new Hashtable());
 			showGui = false;
 	
-		}*/	
+		}	
 					
 			
 		if (GUI.Button(new Rect(200, 10, 150, 100), "FunfFileMover")) {
@@ -70,6 +85,15 @@ public class Settings : MonoBehaviour {
 				AndroidJavaObject pm = jo.Call<AndroidJavaObject>("getPackageManager");
 				AndroidJavaObject intent = pm.Call<AndroidJavaObject>("getLaunchIntentForPackage", "edu.mit.media.prg.funffilemover");
 				jo.Call("startActivity", intent);	
+
+		}		
+			
+			
+			
+		if (GUI.Button(new Rect(200, 150, 150, 100), "Toggle Status Bar")) {
+		
+			showGui = false;
+			AndroidSystem.SendBroadcast("edu.mit.media.prg.funffilemover.ToggleStatusBar", new Hashtable());
 
 		}		
 /*		if (GUI.Button(new Rect(10, 300, 150, 100), "test video")) {
