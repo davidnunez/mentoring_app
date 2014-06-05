@@ -90,12 +90,14 @@ public class App : MonoBehaviour {
 		GameObject go = GameObject.Find ("Mentor");
 		mentor = go.GetComponent<Mentor>();		
 		//transform.localPosition = new Vector3(transform.localPosition.x, Random.Range(-1000 , 1000) ,transform.localPosition.z); 
-	
 	}
 	
 	
 	
-	
+	public void Go() {
+		Debug.Log("ADDED GO");
+		iTween.ScaleBy(gameObject, iTween.Hash("x", relevance_influence_on_bouncing, "y", relevance_influence_on_bouncing, "looptype", "pingPong"));
+	}
 	
 	// Update is called once per frame
 	void Update () {

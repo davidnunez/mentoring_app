@@ -8,9 +8,22 @@ public class Director : MonoBehaviour {
 	
 	
 	public GameObject cameraDolly;
-	
+	private bool appJsonError;
 	
 	void Awake() {
+		SetupApps();
+		
+		
+
+		 
+	}
+	
+	void SetupApps() {
+		GameObject[] gos = GameObject.FindGameObjectsWithTag("App");
+        foreach (GameObject go in gos) {
+			GameObject.Destroy(go);
+		}
+		appJsonError = false;
 		Screen.orientation = ScreenOrientation.LandscapeLeft;
 
 		string fileName = Application.persistentDataPath + "/" + "apps.json";
@@ -23,6 +36,7 @@ public class Director : MonoBehaviour {
 		{""file"":""edu.mit.media.prg.tinkerbook_unity"",""title"":"""",""type"":""app""},	
 	]
 }";
+			appJsonError = true;
 		} 
 			
 			
@@ -32,7 +46,7 @@ public class Director : MonoBehaviour {
 		
 		Debug.Log("Count: " + appArray.Count);
 		foreach (JSONNode node in appArray) {
-			Debug.Log("title:" + node["title"] + ", file:" + node["file"] + ", type:" + node["type"]);
+			Debug.Log("title:" + node["title"] + ", file:" + node["file"] + ", type:" + node["type"] + ", bounce:" + node["bounce"]);
 		}
 		
 		int numApps = appArray.Count;
@@ -68,24 +82,37 @@ public class Director : MonoBehaviour {
 			app.transform.localPosition = new Vector3(0 + i*200, 0 - j * 200, 0);
 			
 			float relevanceFactor = -100.0f;
-			app.transform.localScale = new Vector3(relevanceFactor,-relevanceFactor,relevanceFactor);
+			if (node["scale"].AsBool) {
+				float s = node["scale"].AsFloat;
+				app.transform.localScale = new Vector3(relevanceFactor * s,-relevanceFactor * s,relevanceFactor * s);
+			} else {
+				app.transform.localScale = new Vector3(relevanceFactor,-relevanceFactor,relevanceFactor);
+			}
+
+			
+			
 			app.rigidbody.isKinematic = true;
-						
+			if (node["bounce"].AsBool) {
+				app.relevance_influence_on_bouncing = node["bounce"].AsFloat;
+			} else {
+				app.relevance_influence_on_bouncing = 1.0f;
+
+			}
+			
+			
+			app.Go();
 			i = i+1;
 			if (i >= numCols) {
 				j = j+1;
 				i = 0;
 			}
-		}
-		
+			
+		}	
 		// Position & Size Camera Dolly
 		cameraDolly.transform.position = new Vector3((numCols-1.0f)*200.0f/2.0f, -(numRows-1.0f)*200.0f/2.0f, -700.0f);
 		cameraDolly.transform.localScale = new Vector3((numCols-1-4)*200, (numRows-1-2)*200, 1);	
-		
 
-		 
 	}
-	
 	
 	void OnApplicationPause (bool pause) {
    		if(pause) {
@@ -94,6 +121,7 @@ public class Director : MonoBehaviour {
 		} else {
 			sendLog ("LauncherAppPaused", "{\"paused\": false}");
 			Debug.Log ("launcherapp unpaused");
+			SetupApps();
    		}
 	}
 	
@@ -125,4 +153,9 @@ public class Director : MonoBehaviour {
 		AndroidSystem.SendBroadcast("edu.mit.media.funf.RECORD", extras);
 	}
 	
+	void OnGUI() {
+		if (appJsonError) {
+        	GUI.Label(new Rect(100, 100, 800, 20), "There was an issue loading the apps manifest.");
+		}
+    }
 }
