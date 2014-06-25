@@ -67,13 +67,13 @@ public class Settings : MonoBehaviour {
 
 			
 		}
-		if (GUI.Button(new Rect(10, 290, 150, 100), "Default Launcher")) {
+		//if (GUI.Button(new Rect(10, 290, 150, 100), "Default Launcher")) {
 		
 				
-			AndroidSystem.SendBroadcast("edu.mit.media.prg.funffilemover.TrebuchetLauncher", new Hashtable());
-			showGui = false;
+		//	AndroidSystem.SendBroadcast("edu.mit.media.prg.funffilemover.TrebuchetLauncher", new Hashtable());
+		//	showGui = false;
 	
-		}	
+		//}	
 					
 			
 		if (GUI.Button(new Rect(200, 10, 150, 100), "FunfFileMover")) {
